@@ -19,6 +19,8 @@ import json
 import re
 from collections import defaultdict
 
+import math
+
 from rag.utils.doc_store_conn import MatchTextExpr
 from rag.nlp import rag_tokenizer, term_weight, synonym
 
@@ -127,7 +129,7 @@ class FulltextQueryer:
                 q.append(txt)
             query = " ".join(q)
             return MatchTextExpr(
-                self.query_fields, query, 100
+                self.query_fields, query, 100, {"origin_keywords": keywords}
             ), keywords
 
         def need_fine_grained_tokenize(tk):
@@ -212,7 +214,7 @@ class FulltextQueryer:
             if not query:
                 query = otxt
             return MatchTextExpr(
-                self.query_fields, query, 100, {"minimum_should_match": min_match}
+                self.query_fields, query, 100, {"minimum_should_match": min_match, "origin_keywords": keywords}
             ), keywords
         return None, keywords
 
@@ -248,17 +250,18 @@ class FulltextQueryer:
         s = 1e-9
         for k, v in qtwt.items():
             if k in dtwt:
-                s += v #* dtwt[k]
+                s += v * dtwt[k]
         q = 1e-9
         for k, v in qtwt.items():
-            q += v #* v
-        return s/q #math.sqrt(3. * (s / q / math.log10( len(dtwt.keys()) + 512 )))
+            q += v * v
+        return math.sqrt(s/q)
 
     def paragraph(self, content_tks: str, keywords: list = [], keywords_topn=30):
         if isinstance(content_tks, str):
             content_tks = [c.strip() for c in content_tks.strip() if c.strip()]
         tks_w = self.tw.weights(content_tks, preprocess=False)
 
+        origin_keywords = keywords.copy()
         keywords = [f'"{k.strip()}"' for k in keywords]
         for tk, w in sorted(tks_w, key=lambda x: x[1] * -1)[:keywords_topn]:
             tk_syns = self.syn.lookup(tk)
@@ -274,4 +277,4 @@ class FulltextQueryer:
                 keywords.append(f"{tk}^{w}")
 
         return MatchTextExpr(self.query_fields, " ".join(keywords), 100,
-                             {"minimum_should_match": min(3, len(keywords) // 10)})
+                             {"minimum_should_match": min(3, len(keywords) / 10), "origin_keywords": origin_keywords})

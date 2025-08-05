@@ -36,7 +36,7 @@ from graphrag.utils import (
     GraphChange,
 )
 from rag.nlp import rag_tokenizer, search
-from rag.utils.redis_conn import RedisDistributedLock
+from rag.utils.redis_conn import distributed_lock
 
 
 
@@ -74,7 +74,7 @@ async def run_graphrag(
     if not subgraph:
         return
 
-    graphrag_task_lock = RedisDistributedLock(f"graphrag_task_{kb_id}", lock_value=doc_id, timeout=1200)
+    graphrag_task_lock = distributed_lock(f"graphrag_task_{kb_id}", lock_value=doc_id, timeout=1200)
     await graphrag_task_lock.spin_acquire()
     callback(msg=f"run_graphrag {doc_id} graphrag_task_lock acquired")
 

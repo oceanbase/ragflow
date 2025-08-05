@@ -29,6 +29,10 @@ redis:
   db: 1
   password: 'infini_rag_flow'
   host: 'localhost:6379'
+oceanbase:
+  scheme: 'mysql' # set 'mysql' to create connection using mysql config
+  config:
+    db_name: 'test'
 # postgres:
 #   name: 'rag_flow'
 #   user: 'rag_flow'

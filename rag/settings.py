@@ -22,8 +22,8 @@ from api.utils.file_utils import get_project_base_directory
 RAG_CONF_PATH = os.path.join(get_project_base_directory(), "conf")
 
 # Get storage type and document engine from system environment variables
-STORAGE_IMPL_TYPE = os.getenv('STORAGE_IMPL', 'MINIO')
-DOC_ENGINE = os.getenv('DOC_ENGINE', 'elasticsearch')
+STORAGE_IMPL_TYPE = os.getenv('STORAGE_IMPL', 'OPENDAL')
+DOC_ENGINE = os.getenv('DOC_ENGINE', 'oceanbase')
 
 ES = {}
 INFINITY = {}
@@ -32,6 +32,7 @@ S3 = {}
 MINIO = {}
 OSS = {}
 OS = {}
+OB = {}
 
 # Initialize the selected configuration data based on environment variables to solve the problem of initialization errors due to lack of configuration
 if DOC_ENGINE == 'elasticsearch':
@@ -40,6 +41,8 @@ elif DOC_ENGINE == 'opensearch':
     OS = get_base_config("os", {})
 elif DOC_ENGINE == 'infinity':
     INFINITY = get_base_config("infinity", {"uri": "infinity:23817"})
+elif DOC_ENGINE == 'oceanbase':
+    OB = get_base_config("oceanbase")
 
 if STORAGE_IMPL_TYPE in ['AZURE_SPN', 'AZURE_SAS']:
     AZURE = get_base_config("azure", {})

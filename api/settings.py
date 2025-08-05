@@ -21,7 +21,7 @@ from enum import Enum, IntEnum
 
 import rag.utils
 import rag.utils.es_conn
-import rag.utils.infinity_conn
+import rag.utils.ob_conn
 import rag.utils.opensearch_conn
 from api.constants import RAG_FLOW_SERVICE_NAME
 from api.utils import decrypt_database_config, get_base_config
@@ -155,15 +155,18 @@ def init_settings():
     OAUTH_CONFIG = get_base_config("oauth", {})
 
     global DOC_ENGINE, docStoreConn, retrievaler, kg_retrievaler
-    DOC_ENGINE = os.environ.get("DOC_ENGINE", "elasticsearch")
+    DOC_ENGINE = os.environ.get("DOC_ENGINE", "oceanbase")
     # DOC_ENGINE = os.environ.get('DOC_ENGINE', "opensearch")
     lower_case_doc_engine = DOC_ENGINE.lower()
     if lower_case_doc_engine == "elasticsearch":
         docStoreConn = rag.utils.es_conn.ESConnection()
-    elif lower_case_doc_engine == "infinity":
-        docStoreConn = rag.utils.infinity_conn.InfinityConnection()
+    ## TODO fix dependency conflicts to support infinity
+    # elif lower_case_doc_engine == "infinity":
+    #     docStoreConn = rag.utils.infinity_conn.InfinityConnection()
     elif lower_case_doc_engine == "opensearch":
         docStoreConn = rag.utils.opensearch_conn.OSConnection()
+    elif lower_case_doc_engine == "oceanbase":
+        docStoreConn = rag.utils.ob_conn.OBConnection()
     else:
         raise Exception(f"Not supported doc engine: {DOC_ENGINE}")
 
