@@ -1,3 +1,18 @@
+# RAGFlow on OceanBase
+
+本仓库 fork 自 https://github.com/infiniflow/ragflow ，它使用 OceanBase 作为元数据库、存储引擎、缓存数据库和文档搜索引擎。
+
+您可以先修改 `docker/.env.oceanbase` 配置，然后使用 Docker Compose 部署服务。
+
+```shell
+cd docker
+docker compose -f docker-compose-oceanbase.yml --env-file .env.oceanbase up -d
+```
+
+之后，您可以通过 `http://${HOST}:${WEB_HTTP_PORT}` 访问网页。
+
+-----
+
 <div align="center">
 <a href="https://demo.ragflow.io/">
 <img src="web/src/assets/logo-with-text.png" width="350" alt="ragflow logo">
