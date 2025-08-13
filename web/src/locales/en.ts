@@ -39,6 +39,13 @@ export default {
       nextPage: 'Next',
       add: 'Add',
       promptPlaceholder: `Please input or use / to quickly insert variables.`,
+      mcp: {
+        namePlaceholder: 'My MCP Server',
+        nameRequired:
+          'It must be 1–64 characters long and can only contain letters, numbers, hyphens, and underscores.',
+        urlPlaceholder: 'https://api.example.com/v1/mcp',
+        tokenPlaceholder: 'e.g. eyJhbGciOiJIUzI1Ni...',
+      },
     },
     login: {
       login: 'Sign in',
@@ -555,6 +562,7 @@ This auto-tagging feature enhances retrieval by adding another layer of domain-s
       tavilyApiKeyHelp: 'How to get it?',
       crossLanguage: 'Cross-language search',
       crossLanguageTip: `Select one or more languages for cross‑language search. If no language is selected, the system searches with the original query.`,
+      createChat: 'Create chat',
     },
     setting: {
       profile: 'Profile',
@@ -1020,7 +1028,7 @@ This auto-tagging feature enhances retrieval by adding another layer of domain-s
         '30d': '30 days',
       },
       publish: 'API',
-      exeSQL: 'ExeSQL',
+      exeSQL: 'Execute SQL',
       exeSQLDescription:
         'A component that performs SQL queries on a relational database, supporting querying from MySQL, PostgreSQL, or MariaDB.',
       dbType: 'Database Type',
@@ -1322,6 +1330,7 @@ This delimiter is used to split the input text into several text pieces echo of 
       logTimeline: {
         begin: 'Ready to begin',
         agent: 'Agent is thinking',
+        userFillUp: 'Waiting for you',
         retrieval: 'Looking up knowledge',
         message: 'Agent says',
         awaitResponse: 'Waiting for you',
@@ -1366,6 +1375,9 @@ This delimiter is used to split the input text into several text pieces echo of 
       serverType: 'Server Type',
       addMCP: 'Add MCP',
       editMCP: 'Edit MCP',
+    },
+    search: {
+      createSearch: 'Create Search',
     },
   },
 };

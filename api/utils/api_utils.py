@@ -402,8 +402,22 @@ def get_data_openai(
     finish_reason=None,
     object="chat.completion",
     param=None,
+    stream=False
 ):
     total_tokens = prompt_tokens + completion_tokens
+
+    if stream:
+        return {
+            "id": f"{id}",
+            "object": "chat.completion.chunk",
+            "model": model,
+            "choices": [{
+                "delta": {"content": content},
+                "finish_reason": finish_reason,
+                "index": 0,
+            }],
+        }
+
     return {
         "id": f"{id}",
         "object": object,
@@ -414,9 +428,21 @@ def get_data_openai(
             "prompt_tokens": prompt_tokens,
             "completion_tokens": completion_tokens,
             "total_tokens": total_tokens,
-            "completion_tokens_details": {"reasoning_tokens": 0, "accepted_prediction_tokens": 0, "rejected_prediction_tokens": 0},
+            "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": 0,
+                "rejected_prediction_tokens": 0,
+            },
         },
-        "choices": [{"message": {"role": "assistant", "content": content}, "logprobs": None, "finish_reason": finish_reason, "index": 0}],
+        "choices": [{
+            "message": {
+                "role": "assistant",
+                "content": content
+            },
+            "logprobs": None,
+            "finish_reason": finish_reason,
+            "index": 0,
+        }],
     }
 
 
@@ -687,7 +713,13 @@ def timeout(seconds: float | int = None, attempts: int = 2, *, exception: Option
 
 
 async def is_strong_enough(chat_model, embedding_model):
-    @timeout(30, 2)
+    count = settings.STRONG_TEST_COUNT
+    if not chat_model or not embedding_model:
+        return
+    if isinstance(count, int) and count <= 0:
+        return
+
+    @timeout(60, 2)
     async def _is_strong_enough():
         nonlocal chat_model, embedding_model
         if embedding_model:
@@ -701,5 +733,5 @@ async def is_strong_enough(chat_model, embedding_model):
 
     # Pressure test for GraphRAG task
     async with trio.open_nursery() as nursery:
-        for _ in range(32):
+        for _ in range(count):
             nursery.start_soon(_is_strong_enough)

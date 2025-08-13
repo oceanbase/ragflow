@@ -51,7 +51,7 @@ export function JsonViewer({
         src={data}
         displaySize
         collapseStringsAfterLength={100000000000}
-        className="w-full h-[200px] break-words overflow-auto scrollbar-auto p-2 bg-slate-800"
+        className="w-full h-[200px] break-words overflow-auto scrollbar-auto p-2 bg-muted"
       />
     </section>
   );
@@ -81,11 +81,21 @@ export const typeMap = {
   httpRequest: t('flow.logTimeline.httpRequest'),
   wenCai: t('flow.logTimeline.wenCai'),
   yahooFinance: t('flow.logTimeline.yahooFinance'),
+  userFillUp: t('flow.logTimeline.userFillUp'),
 };
 export const toLowerCaseStringAndDeleteChar = (
   str: string,
   char: string = '_',
 ) => str.toLowerCase().replace(/ /g, '').replaceAll(char, '');
+
+// Convert all keys in typeMap to lowercase and output the new typeMap
+export const typeMapLowerCase = Object.fromEntries(
+  Object.entries(typeMap).map(([key, value]) => [
+    toLowerCaseStringAndDeleteChar(key),
+    value,
+  ]),
+);
+
 function getInputsOrOutputs(
   nodeEventList: INodeData[],
   field: 'inputs' | 'outputs',
@@ -201,7 +211,7 @@ export const WorkFlowTimeline = ({
             >
               <TimelineHeader>
                 <TimelineSeparator
-                  className="group-data-[orientation=vertical]/timeline:-left-7 group-data-[orientation=vertical]/timeline:h-[calc(100%-1.5rem-0.25rem)] group-data-[orientation=vertical]/timeline:translate-y-6.5 top-6 bg-background-checked"
+                  className="group-data-[orientation=vertical]/timeline:-left-7 group-data-[orientation=vertical]/timeline:h-[calc(100%-1.5rem-0.25rem)] group-data-[orientation=vertical]/timeline:translate-y-6.5 top-6 bg-accent-primary"
                   style={{
                     background:
                       x.data.component_type === 'Agent'
@@ -244,28 +254,31 @@ export const WorkFlowTimeline = ({
                   <Accordion
                     type="single"
                     collapsible
-                    className="bg-background-card px-3"
+                    className="bg-bg-card px-3"
                   >
                     <AccordionItem value={idx.toString()}>
-                      <AccordionTrigger>
+                      <AccordionTrigger
+                        hideDownIcon={isShare && !x.data?.thoughts}
+                      >
                         <div className="flex gap-2 items-center">
                           <span>
                             {!isShare && getNodeName(x.data?.component_name)}
                             {isShare &&
-                              typeMap[
+                              (typeMapLowerCase[
                                 toLowerCaseStringAndDeleteChar(
                                   nodeLabel,
                                 ) as keyof typeof typeMap
-                              ]}
+                              ] ??
+                                nodeLabel)}
                           </span>
-                          <span className="text-text-sub-title text-xs">
+                          <span className="text-text-secondary text-xs">
                             {x.data.elapsed_time?.toString().slice(0, 6)}
                           </span>
                           <span
                             className={cn(
                               'border-background  -end-1 -top-1 size-2 rounded-full',
-                              { 'bg-dot-green': isEmpty(x.data.error) },
-                              { 'bg-dot-red': !isEmpty(x.data.error) },
+                              { 'bg-state--success': isEmpty(x.data.error) },
+                              { 'bg-state--error': !isEmpty(x.data.error) },
                             )}
                           >
                             <span className="sr-only">Online</span>
@@ -294,7 +307,7 @@ export const WorkFlowTimeline = ({
                       {isShare && x.data?.thoughts && (
                         <AccordionContent>
                           <div className="space-y-2">
-                            <div className="w-full h-[200px] break-words overflow-auto scrollbar-auto p-2 bg-slate-800">
+                            <div className="w-full h-[200px] break-words overflow-auto scrollbar-auto p-2 bg-muted">
                               <HightLightMarkdown>
                                 {x.data.thoughts || ''}
                               </HightLightMarkdown>

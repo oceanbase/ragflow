@@ -38,7 +38,7 @@ export const OperatorIconMap = {
   [Operator.Email]: 'sendemail-0',
 };
 
-const SVGIconMap = {
+export const SVGIconMap = {
   [Operator.ArXiv]: ArxivIcon,
   [Operator.GitHub]: GithubIcon,
   [Operator.Bing]: BingIcon,
@@ -64,7 +64,7 @@ const OperatorIcon = ({ name, className }: IProps) => {
 
   if (name === Operator.Begin) {
     return (
-      <div className="inline-block p-1 bg-background-checked rounded-sm">
+      <div className="inline-block p-1 bg-accent-primary rounded-sm">
         <HousePlus className="rounded size-3" />
       </div>
     );

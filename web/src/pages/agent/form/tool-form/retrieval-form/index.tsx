@@ -11,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { DescriptionField } from '../../components/description-field';
+import { FormWrapper } from '../../components/form-wrapper';
 import {
   EmptyResponseField,
   RetrievalPartialSchema,
@@ -35,15 +36,10 @@ const RetrievalForm = () => {
 
   return (
     <Form {...form}>
-      <form
-        className="space-y-6 p-4"
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
-      >
+      <FormWrapper>
         <FormContainer>
           <DescriptionField></DescriptionField>
-          <KnowledgeBaseFormField></KnowledgeBaseFormField>
+          <KnowledgeBaseFormField showVariable></KnowledgeBaseFormField>
         </FormContainer>
         <Collapse title={<div>Advanced Settings</div>}>
           <FormContainer>
@@ -58,7 +54,7 @@ const RetrievalForm = () => {
             <UseKnowledgeGraphFormField name="use_kg"></UseKnowledgeGraphFormField>
           </FormContainer>
         </Collapse>
-      </form>
+      </FormWrapper>
     </Form>
   );
 };

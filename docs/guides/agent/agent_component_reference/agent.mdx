@@ -9,7 +9,7 @@ The component equipped with reasoning, tool usage, and multi-agent collaboration
 
 ---
 
-An **Agent** component fine-tunes the LLM and sets its prompt. From v0.20.0 onwards, an **Agent** component is able to work independently and with the following capabilities:
+An **Agent** component fine-tunes the LLM and sets its prompt. From v0.20.1 onwards, an **Agent** component is able to work independently and with the following capabilities:
 
 - Autonomous reasoning with reflection and adjustment based on environmental feedback.
 - Use of tools or subagents to complete tasks.
@@ -82,7 +82,7 @@ An integer specifying the number of previous dialogue rounds to input into the L
 This feature is used for multi-turn dialogue *only*.
 :::
 
-### Max retrieves
+### Max retries
 
 Defines the maximum number of attempts the agent will make to retry a failed task or operation before stopping or reporting failure.
 
@@ -92,7 +92,11 @@ The waiting period in seconds that the agent observes before retrying a failed t
 
 ### Max rounds
 
-Defines the maximum number reflection rounds of the selected chat model. Defaults to 5 rounds.
+Defines the maximum number reflection rounds of the selected chat model. Defaults to 1 round.
+
+:::tip NOTE
+Increasing this value will significantly extend your agent's response time.
+:::
 
 ### Output
 

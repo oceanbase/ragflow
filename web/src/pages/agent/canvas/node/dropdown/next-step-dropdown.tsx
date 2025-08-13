@@ -11,6 +11,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { IModalProps } from '@/interfaces/common';
 import { Operator } from '@/pages/agent/constant';
 import { AgentInstanceContext, HandleContext } from '@/pages/agent/context';
@@ -33,19 +38,26 @@ function OperatorItemList({ operators }: OperatorItemProps) {
     <ul className="space-y-2">
       {operators.map((x) => {
         return (
-          <DropdownMenuItem
-            key={x}
-            className="hover:bg-background-card py-1 px-3 cursor-pointer rounded-sm flex gap-2 items-center justify-start"
-            onClick={addCanvasNode(x, {
-              nodeId,
-              id,
-              position,
-            })}
-            onSelect={() => hideModal?.()}
-          >
-            <OperatorIcon name={x}></OperatorIcon>
-            {t(`flow.${lowerFirst(x)}`)}
-          </DropdownMenuItem>
+          <Tooltip key={x}>
+            <TooltipTrigger asChild>
+              <DropdownMenuItem
+                key={x}
+                className="hover:bg-bg-card py-1 px-3 cursor-pointer rounded-sm flex gap-2 items-center justify-start"
+                onClick={addCanvasNode(x, {
+                  nodeId,
+                  id,
+                  position,
+                })}
+                onSelect={() => hideModal?.()}
+              >
+                <OperatorIcon name={x}></OperatorIcon>
+                {t(`flow.${lowerFirst(x)}`)}
+              </DropdownMenuItem>
+            </TooltipTrigger>
+            <TooltipContent side="right">
+              <p>{t(`flow.${lowerFirst(x)}Description`)}</p>
+            </TooltipContent>
+          </Tooltip>
         );
       })}
     </ul>
@@ -56,7 +68,7 @@ function AccordionOperators() {
   return (
     <Accordion
       type="multiple"
-      className="px-2 text-text-title max-h-[45vh] overflow-auto"
+      className="px-2 text-text-primary max-h-[45vh] overflow-auto"
       defaultValue={['item-1', 'item-2', 'item-3', 'item-4', 'item-5']}
     >
       <AccordionItem value="item-1">
