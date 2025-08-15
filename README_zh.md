@@ -1,15 +1,32 @@
 # RAGFlow on OceanBase
 
+[English](README.md) | 简体中文
+
 本仓库 fork 自 https://github.com/infiniflow/ragflow ，它使用 OceanBase 作为元数据库、存储引擎、缓存数据库和文档搜索引擎。
 
-您可以先修改 `docker/.env.oceanbase` 配置，然后使用 Docker Compose 部署服务。
+## 快速启动
 
-```shell
-cd docker
-docker compose -f docker-compose-oceanbase.yml --env-file .env.oceanbase up -d
-```
+您可以使用 Docker Compose 快速启动 RAGFlow on OceanBase，操作流程如下：
 
-之后，您可以通过 `http://${HOST}:${WEB_HTTP_PORT}` 访问网页。
+1. 拉取 `oceanbase` 分支最新的代码：
+
+    ```shell
+    git clone -b oceanbase --single-branch https://github.com/oceanbase/ragflow.git
+    cd ragflow
+    ```
+
+2. 按需调整配置文件 `docker/.env.oceanbase`
+
+3. 使用 Docker Compose 启动服务，该操作会启动 RAGFlow 和 OceanBase 两个容器
+
+    ```shell
+    cd docker
+    docker compose -f docker-compose-oceanbase.yml --env-file .env.oceanbase up -d
+    ```
+
+您可以通过 `docker compose -f docker-compose-oceanbase.yml --env-file .env.oceanbase logs -f` 查看服务的最新日志。
+
+在服务启动成功后，您可以通过 `WEB_HTTP_PORT` 或 `WEB_HTTPS_PORT` 端口访问网页，如 [http://localhost](http://localhost)。
 
 -----
 

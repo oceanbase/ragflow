@@ -1,15 +1,32 @@
 # RAGFlow on OceanBase
 
+English | [简体中文](README_zh.md)
+
 This is a fork of https://github.com/infiniflow/ragflow, which uses OceanBase as the meta database, storage engine, cache database and doc search engine. 
 
-You can modify the config `docker/.env.oceanbase` firstly, and then deploy the service using Docker Compose.
+## Quick Start
 
-```shell
-cd docker
-docker compose -f docker-compose-oceanbase.yml --env-file .env.oceanbase up -d
-```
+You can use Docker Compose to quickly start RAGFlow on OceanBase. The steps are as follows:
 
-After that, you can reach the web page at `http://${HOST}:${WEB_HTTP_PORT}`.
+1. Pull the latest code from the `oceanbase` branch:
+
+    ```shell
+    git clone -b oceanbase --single-branch https://github.com/oceanbase/ragflow.git
+    cd ragflow
+    ```
+
+2. Adjust the `docker/.env.oceanbase` configuration file as needed.
+
+3. Start the service using Docker Compose. This will start two containers: RAGFlow and OceanBase.
+
+    ```shell
+    cd docker
+    docker compose -f docker-compose-oceanbase.yml --env-file .env.oceanbase up -d
+    ```
+
+You can view the latest service logs using `docker compose -f docker-compose-oceanbase.yml --env-file .env.oceanbase logs -f`.
+
+After all services are started successfully, you can access the web page through `WEB_HTTP_PORT` or `WEB_HTTPS_PORT`, such as [http://localhost](http://localhost).
 
 -----
 
