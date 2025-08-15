@@ -42,12 +42,12 @@ services:
       - MACOS=${MACOS-}
       - MYSQL_HOST=oceanbase
       - MYSQL_PORT=2881
-      - MYSQL_USER=root@${OB_TENANT_NAME:-powerrag}
+      - MYSQL_USER=root@${OB_TENANT_NAME:-ragflow}
       - MYSQL_PASSWORD=${OB_TENANT_PASSWORD:-123456}
       - MYSQL_DBNAME=${OCEANBASE_META_DBNAME:-ragflow}
       - OCEANBASE_DOC_DBNAME=${OCEANBASE_DOC_DBNAME:-ragflow_doc}
     networks:
-      - powerrag-ce
+      - ragflow-on-ob
     restart: on-failure
     # https://docs.docker.com/engine/daemon/prometheus/#create-a-prometheus-configuration
     # If you use Docker Desktop, the --add-host flag is optional. This flag ensures that the host's internal IP is exposed to the Prometheus container.
@@ -83,8 +83,8 @@ services:
       - ${EXPOSE_OB_PORT:-2881}:2881
     env_file: .env.oceanbase
     environment:
-      - OB_CLUSTER_NAME=${OB_CLUSTER_NAME:-powerrag-ce}
-      - OB_TENANT_NAME=${OB_TENANT_NAME:-powerrag}
+      - OB_CLUSTER_NAME=${OB_CLUSTER_NAME:-ragflow-on-ob}
+      - OB_TENANT_NAME=${OB_TENANT_NAME:-ragflow}
       - OB_SYS_PASSWORD=${OB_SYS_PASSWORD:-123456}
       - OB_TENANT_PASSWORD=${OB_TENANT_PASSWORD:-123456}
       - OB_SERVER_IP=127.0.0.1
@@ -93,7 +93,7 @@ services:
       - ./oceanbase/data:/root/ob
       - ./oceanbase/conf:/root/.obd/cluster
     networks:
-      - powerrag-ce
+      - ragflow-on-ob
     restart: always
     healthcheck:
       test: [ 'CMD-SHELL', 'obclient -h127.0.0.1 -P2881 -uroot@${OB_TENANT_NAME} -p${OB_TENANT_PASSWORD} -e "CREATE DATABASE IF NOT EXISTS ${OCEANBASE_META_DBNAME:-ragflow}; CREATE DATABASE IF NOT EXISTS ${OCEANBASE_DOC_DBNAME:-ragflow_doc};"' ]
@@ -103,5 +103,5 @@ services:
       timeout: 10s
 
 networks:
-  powerrag-ce:
+  ragflow-on-ob:
     driver: bridge
