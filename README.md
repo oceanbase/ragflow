@@ -1,3 +1,13 @@
+> [!WARNING] ⚠️ **Repository No Longer Maintained**
+> 
+> **This repository is no longer maintained.** All future updates and development will continue at:
+> 
+> **👉 [https://github.com/oceanbase/powerrag](https://github.com/oceanbase/powerrag)**
+> 
+> Please visit the new repository for the latest features, bug fixes, and support.
+
+---
+
 # RAGFlow on OceanBase
 
 English | [简体中文](README_zh.md)

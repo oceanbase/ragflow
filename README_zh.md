@@ -1,3 +1,13 @@
+> [!WARNING] ⚠️ **仓库已停止维护**
+> 
+> **本仓库已不再维护。** 所有后续更新和开发将在以下地址继续：
+> 
+> **👉 [https://github.com/oceanbase/powerrag](https://github.com/oceanbase/powerrag)**
+> 
+> 请访问新仓库以获取最新功能、错误修复和支持。
+
+---
+
 # RAGFlow on OceanBase
 
 [English](README.md) | 简体中文
