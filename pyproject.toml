@@ -104,7 +104,7 @@ dependencies = [
     "volcengine==1.0.194",
     "voyageai==0.2.3",
     "webdriver-manager==4.0.1",
-    "werkzeug==3.0.6",
+    "werkzeug==3.1.4",
     "wikipedia==1.4.0",
     "word2number==1.1",
     "xgboost==1.6.0",
